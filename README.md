@@ -3,6 +3,9 @@
 A fully interactive web-based Chess game built only using **HTML**, **CSS**, and **JavaScript**. You can play on a raw board or with an AI opponent.
 
 ---
+# Live Preview
+https://html-guy0.github.io/Chess/
+---
 
 # Features
 
