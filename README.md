@@ -1,3 +1,4 @@
+![ ](example.png)
 # Chess Game
 
 A fully interactive web-based Chess game built only using **HTML**, **CSS**, and **JavaScript**. You can play on a raw board or with an AI opponent.
