@@ -1,0 +1,287 @@
+/* Improved styles based on your original file.
+   What I changed:
+   - Kept your light/dark square colors and layout but introduced more variables for theming.
+   - Clean, modern button styles with accessible :focus-visible ring and subtle press animation.
+   - Clean styling for the New Game button (centered below the board) and a compact arrows container (#moveArrowsContainer)
+     with image-icon support (#prevMoveBtn, #nextMoveBtn) and graceful fallback.
+   - Minor visual improvements for highlights, last-move indication, and responsive sizing.
+*/
+
+:root{
+  /* board colors (preserve your original palette) */
+  --light: #f0d9b5;
+  --dark:  #b58863;
+
+  /* UI / theme */
+  --bg: #0f1113;
+  --panel: #1b1c1e;
+  --muted: #9aa3ad;
+  --accent: #6aa6ff;
+  --button-bg: #222;
+  --button-border: #333;
+  --button-hover: #2e2f31;
+  --focus-ring: rgba(106,166,255,0.22);
+
+  /* spacing / sizes */
+  --gutter: 12px;
+  --board-max: 620px;
+  --icon-size: 34px;
+}
+
+/* Base reset */
+* { box-sizing: border-box; }
+html,body{
+  margin: 0;
+  height: 100%;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(180deg, #0b0c0d 0%, var(--bg) 100%);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page shell */
+.wrap{
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 28px;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Title */
+h1{
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+
+/* Board container */
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: 1fr;
+  width: min(92vmin, var(--board-max));
+  aspect-ratio: 1 / 1;
+  border: 4px solid #888;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(255,255,255,0.02));
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+}
+
+/* Squares */
+.square{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .12s linear;
+}
+.square.light { background: var(--light); }
+.square.dark  { background: var(--dark); }
+
+/* Last move / selection markers */
+.square.last-move{
+  outline: 4px solid rgba(106,166,255,0.12);
+  box-sizing: border-box;
+}
+.square.selected{
+  box-shadow: inset 0 0 0 3px rgba(106,166,255,0.14);
+}
+
+/* Piece images — positioned & scaled nicely */
+.piece{
+  position: absolute;
+  width: 92%;
+  height: 92%;
+  left: 4%;
+  top: 4%;
+  pointer-events: none; /* interactions handled by squares */
+  user-select: none;
+  image-rendering: -webkit-optimize-contrast;
+  transition: transform .08s ease, opacity .08s ease;
+  will-change: transform, opacity;
+}
+
+/* Dragging visual (applied by JS with .dragging) */
+.piece.dragging{
+  transform: scale(1.02);
+  opacity: 0.98;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.6);
+  z-index: 9999;
+}
+
+/* Square move highlight (dot or capture ring) */
+.highlight{
+  position: absolute;
+  width: 40%;
+  height: 40%;
+  left: 30%;
+  top: 30%;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+}
+.square.capture::after{
+  content: '';
+  position: absolute;
+  width: 66%;
+  height: 66%;
+  border-radius: 50%;
+  background: rgba(220,80,80,0.14);
+  z-index: 1;
+  left: 17%;
+  top: 17%;
+}
+
+/* Controls row */
+.controls{
+  margin-top: var(--gutter);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  width: min(92vmin, var(--board-max));
+  justify-content: flex-start;
+}
+
+/* New Game button (will be placed after #board by JS) */
+#newGameBtn{
+  display: block;
+  margin: 12px auto 0 auto; /* centered and slightly below board */
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--button-border);
+  background: var(--button-bg);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  min-width: 120px;
+  text-align: center;
+  transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
+}
+
+/* General button reset + usable defaults */
+button{
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--button-bg);
+  color: #fff;
+  border: 1px solid var(--button-border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: transform .08s ease, box-shadow .12s ease, background .12s ease, opacity .12s;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover / active */
+button:hover:not(:disabled){ background: var(--button-hover); transform: translateY(-1px); }
+button:active:not(:disabled){ transform: translateY(0); }
+
+/* Accessible keyboard focus */
+button:focus-visible{
+  box-shadow: 0 0 0 4px var(--focus-ring);
+  border-color: var(--accent);
+}
+
+/* Disabled appearance */
+button:disabled{
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+  pointer-events: none;
+}
+
+/* Icon-only buttons (arrow image buttons) — minimal chrome */
+button.icon,
+#prevMoveBtn, #nextMoveBtn{
+  background: transparent;
+  border: none;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+/* Arrow images */
+#prevMoveBtn img,
+#nextMoveBtn img{
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity .12s ease, transform .08s ease;
+}
+
+/* Small hover for arrows */
+#prevMoveBtn:hover img,
+#nextMoveBtn:hover img{ transform: translateY(-2px); }
+
+/* Disabled image dimming */
+#prevMoveBtn:disabled img,
+#nextMoveBtn:disabled img{ opacity: 0.45; transform: none; }
+
+/* Arrows container: sits just under the New Game button (JS places it after newGameBtn) */
+#moveArrowsContainer{
+  margin: 6px auto 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: min(92vmin, 360px);
+  max-width: 100%;
+}
+
+/* Label inside arrows container */
+#moveArrowsContainer > div{
+  min-width: 120px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.92rem;
+  user-select: none;
+}
+
+/* Small turn indicator & footer helpers */
+.turn-wrap{
+  margin-top: 8px;
+  color: var(--muted);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Footer / help text */
+.footer{
+  margin-top: 10px;
+  color: #dfe7ec;
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: min(92vmin, var(--board-max));
+}
+
+/* Responsive tweaks */
+@media (max-width: 520px){
+  :root{ --icon-size: 18px; }
+  #newGameBtn{ min-width: 100px; padding: 8px 10px; }
+  #moveArrowsContainer{ width: 87vw; gap: 8px; }
+}
+
+/* Utility helpers you can use from JS (kept here so visuals are consistent) */
+.hidden{ display: none !important; }
+.center{ display: flex; justify-content: center; align-items: center; }
+
+/* End of file */

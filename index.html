@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chess</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <h1>Play Chess</h1>
+
+        <!-- Controls: New Game button placed here so it appears next to AI toggle (script will append AI controls) -->
+    <div class="controls">
+      <button id="newGameBtn">New Game</button>
+      <!-- script.js will add the AI toggle / color / depth controls here -->
+    </div>
+    
+    <!-- Turn indicator -->
+    <div style="margin-top:6px; font-weight:600;">
+      Turn: <span id="turnIndicator">White</span>
+    </div>
+
+    <!-- Board container required by script.js -->
+    <div id="board" class="board" aria-label="Chess board"></div>
+  </div>
+
+  <!-- Scripts: your script.js expects these DOM elements. It safely initializes on DOMContentLoaded. -->
+  <script src="script.js"></script>
+</body>
+</html>
