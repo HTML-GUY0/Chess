@@ -39,3 +39,8 @@ https://html-guy0.github.io/Chess/
 - The AI is made also in the same file (script.js).
 - The board is Clean and looks same as Chess.com's board.
 - There's no errors :)
+
+# Problems
+- You can't promote to any other pieces more than a queen so not every single move is possible.
+
+- The AI can't checkmate, it doesn't knows how to checkmate. It starts playing some random moves when you don't have any pieces left, so just accept it as a lost game (not of the ai) because it cannot even blunder anything or just resign.
