@@ -1,12 +1,3 @@
-/* Improved styles based on your original file.
-   What I changed:
-   - Kept your light/dark square colors and layout but introduced more variables for theming.
-   - Clean, modern button styles with accessible :focus-visible ring and subtle press animation.
-   - Clean styling for the New Game button (centered below the board) and a compact arrows container (#moveArrowsContainer)
-     with image-icon support (#prevMoveBtn, #nextMoveBtn) and graceful fallback.
-   - Minor visual improvements for highlights, last-move indication, and responsive sizing.
-*/
-
 :root{
   /* board colors (preserve your original palette) */
   --light: #f0d9b5;
@@ -114,7 +105,7 @@ h1{
   will-change: transform, opacity;
 }
 
-/* Dragging visual (applied by JS with .dragging) */
+/* This Feature doesn't work */
 .piece.dragging{
   transform: scale(1.02);
   opacity: 0.98;
