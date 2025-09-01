@@ -1,10 +1,3 @@
-/*
-  script.js — same chess script with move-history arrows.
-  Updated: arrow buttons use images named "arrow-left.png" and "arrow-right.png".
-  If the images fail to load, the buttons gracefully fall back to text arrows.
-  The arrows are placed just below the New Game button.
-*/
-
 (function(){
   'use strict';
 
